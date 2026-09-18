@@ -1,8 +1,6 @@
-# NLP 教学训练框架
+# Lumina
 
-> **AI 行动最高优先级：** 用户说“下一步”“继续”“开始”“进入下一步”等推进性表达时，只授权 AI 在对话中给出指导、审查和下一最小步骤，**绝不授权修改代码、配置、数据或文档，也不授权启动训练、测试或命令**。只有用户明确要求“修改/实现/写入文件/运行”及其具体范围时，AI 才能执行对应操作；有歧义时一律保持只读。
-
-用于电子科技大学凌睿工作室 ML 招新 NLP 题的教学训练框架。
+凌睿工作室二轮招新题目
 
 ## 推荐运行环境
 
@@ -12,14 +10,16 @@
 
 - Windows 用户：推荐安装 WSL2，在 WSL2 的 Linux 发行版内安装 Miniconda；
 - Linux 用户：安装 Miniconda；
-- 不使用 WSL 的 Windows 用户：可以安装 Anaconda，但部分 Linux 命令和多卡行为可能不同；
+- 不建议使用windows系统；
 - 不建议直接使用系统 Python，以免污染系统环境或产生依赖冲突。
 
 Miniconda 下载地址：[Miniconda 官方文档](https://docs.conda.io/projects/miniconda/en/latest/)。WSL 安装方式见 [Microsoft WSL 官方文档](https://learn.microsoft.com/windows/wsl/install)。
 
+当然如果实在是没招了也可以使用AI工具 (x)
+
 ## 创建环境
 
-安装 Miniconda 或 Anaconda 后，创建名为 `NLP` 的独立环境：
+安装 Miniconda 或 Anaconda 后，创建你的独立环境，示例如下：
 
 ```bash
 conda create -n NLP python=3.11.14 pip -y
@@ -32,6 +32,8 @@ python --version
 ## 安装依赖
 
 本项目使用 pip 在 Conda 环境内安装 `requirements.txt` 中固定的直接依赖。只使用正式稳定版本，不使用 PyTorch Nightly 或 alpha、beta、rc、dev 等预发布版本。
+
+示例如下:
 
 ```bash
 conda activate NLP
