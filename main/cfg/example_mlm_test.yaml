@@ -1,0 +1,24 @@
+# MLM 预训练 Test 示例配置
+# Test 结构固定：run.checkpoint、losses、data、evaluation.metrics.test、runtime；
+# Tokenizer 和 Model 从训练配置读取；Loss 可在 Test 配置中声明，保持与旧版
+# Test 语义一致，具体训练组件仍通过 checkpoint.train_config 恢复。
+
+version: 1
+
+experiment:
+  name: TinyBert_MLM_PreTrain_Test
+
+task: mlmpretrain_test
+
+run:
+  checkpoint:
+    path:
+    train_config:
+
+losses:
+
+data:
+
+evaluation:
+
+runtime:
