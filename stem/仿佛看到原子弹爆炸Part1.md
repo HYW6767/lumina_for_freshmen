@@ -88,6 +88,7 @@
 
 - [Transformer论文逐段精读【论文精读】_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1pu411o7BE?spm_id_from=333.788.videopod.sections&vd_source=93f6a1cd4c5da79afaf3cdd42be31dfe)
 - [[1706.03762v6\] Attention Is All You Need](https://arxiv.org/abs/1706.03762v6)
+- [【1080P】安德烈·卡帕西：深入探索像ChatGPT这样的大语言模型｜Andrej Karpathy_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV16cNEeXEer/?spm_id_from=333.337.search-card.all.click&vd_source=93f6a1cd4c5da79afaf3cdd42be31dfe)
 
 1. 谈谈你对大模型的理解，或者说，对大模型有什么印象？大模型的“大”到底在哪里？
 2. 我们天天使用的豆包，deepseek，千问，到底算严格意义上的大模型吗？
@@ -108,7 +109,39 @@
 2. 计算精度是啥？对模型训练有什么影响？如何选择计算精度？
 3. 什么是 Agent？它与大模型是什么关系？大模型与 Agent 在一个任务中分别承担什么职责？为什么单纯依靠一次 LLM 调用难以完成某些复杂任务？
 
+****
+
 ### TASK 3 初识BERT
 
-在前面的任务和招新题中，我们已经认识到了一个模型究竟是如何完成训练的，也知道了关于大模型最基础的一部分知识，在这个任务中，我们来认识一个经典的大模型——BERT
+在前面的任务和招新题中，我们已经认识到了一个模型究竟是如何完成训练的，也知道了关于大模型最基础的一部分知识，在这个任务中，我们来认识一个经典的预训练语言模型——BERT
 
+BERT 是 Transformer 发展过程中的一个重要模型。通过本次任务，希望你能够从 BERT 出发，进一步理解预训练语言模型是如何进行训练的、预训练模型为什么能够迁移到不同的下游任务，以及不同模型的设计又是如何与它们的训练目标相互对应的。
+
+相关资料:
+
+- [BERT 论文逐段精读【论文精读】_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1PL411M7eQ?spm_id_from=333.788.videopod.sections&vd_source=93f6a1cd4c5da79afaf3cdd42be31dfe)
+- [[1810.04805\] BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805)
+
+- [BERT代码_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1yU4y1E7Ns/?spm_id_from=333.788.videopod.episodes&vd_source=93f6a1cd4c5da79afaf3cdd42be31dfe&p=2)
+- [The Illustrated BERT, ELMo, and co. (How NLP Cracked Transfer Learning) – Jay Alammar – Visualizing machine learning one concept at a time.](https://jalammar.github.io/illustrated-bert/?utm_source=chatgpt.com)
+
+1. BERT是什么？BERT与Transformer有什么关系？他的架构有什么特点？他主要用来解决什么问题？
+2. BERT的输入是什么？输出又是什么？
+3. NSP是什么？MLM又是什么？
+4. BERT为什么需要MASK？如果把MASK换成其他东西呢？（如随机token）
+5. BERT为什么需要预训练？一次性训练完不行吗？
+6. BERT的预训练是怎样进行的？他的预训练有什么特点？他的预训练是想训练什么东西出来？为什么要采用这样的训练策略？
+7. BERT预训练完成后，又如何进行微调？BERT一般可以做什么下游任务？为什么？
+8. BERT和GPT一样吗？请从多个方面（如架构，训练方式，上下文）去谈谈两者的区别
+9. BERT为什么不能像GPT一样生成一长串文章？
+
+****
+
+### TASK 3 附加题
+
+1. BERT有什么变体？各自又有什么特点？
+2. 为什么BERT行得通？
+
+3. 给定一个经过 Tokenizer 和 Padding 等数据处理后得到的形状为 `[B,S]` 的 Token ID 张量，请阐述该张量输入 BERT 后的完整变化过程，并尽可能标明各阶段张量的形状。
+4. 如果让你设计一个类似 BERT 的预训练模型，你会如何设计它的预训练任务？为什么？
+5. 你从BERT上面得到了什么启发？
