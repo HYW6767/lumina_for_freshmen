@@ -14,7 +14,6 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent
 REQUIREMENTS_FILE = PROJECT_ROOT / "requirements.txt"
 
-# requirements.txt 使用的是发行包名称，而 import 可能使用不同的模块名称。
 IMPORT_NAMES = {
     "PyYAML": "yaml",
 }
@@ -23,12 +22,10 @@ EXPECTED_PYTHON = "3.11.14"
 
 
 def base_version(version: str) -> str:
-    """去掉本地构建后缀（如 +cu128）后比较，避免误报。"""
     return version.split("+")[0].strip()
 
 
 def get_env_info() -> str:
-    """兼容 venv/virtualenv/conda 的环境识别。"""
     conda_env = os.environ.get("CONDA_DEFAULT_ENV")
     conda_prefix = os.environ.get("CONDA_PREFIX")
     venv = os.environ.get("VIRTUAL_ENV")
@@ -42,7 +39,6 @@ def get_env_info() -> str:
 
 
 def read_requirements() -> list[tuple[str, str | None]]:
-    """读取 requirements.txt 中的包名和固定版本。"""
     requirements: list[tuple[str, str | None]] = []
     requirement_pattern = re.compile(r"^([A-Za-z0-9_.-]+)\s*(?:==\s*([^;#\s]+))?")
 
@@ -60,7 +56,6 @@ def read_requirements() -> list[tuple[str, str | None]]:
 
 
 def check_dependency(package_name: str, expected_version: str | None) -> str:
-    """导入依赖并检查其安装版本。"""
     module_name = IMPORT_NAMES.get(package_name, package_name)
     try:
         module = importlib.import_module(module_name)
@@ -87,7 +82,6 @@ def check_dependency(package_name: str, expected_version: str | None) -> str:
 
 
 def print_runtime_info() -> None:
-    """输出解释器、操作系统和进程环境信息。"""
     python_version = platform.python_version()
     print("=== NLP 环境自查 ===")
     print(f"Python 版本: {python_version}")
@@ -105,7 +99,6 @@ def print_runtime_info() -> None:
 
 
 def print_torch_info() -> None:
-    """输出 PyTorch、CUDA 和 GPU 信息，并执行 CUDA 矩阵乘法测试。"""
     try:
         import torch
     except ImportError as error:

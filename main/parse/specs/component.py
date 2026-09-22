@@ -13,8 +13,6 @@ from models.Transformer.tokenizer.registry import TOKENIZER_REGISTRY
 from models.Transformer.modeling.registry import MODEL_REGISTRY
 from models.Transformer.losses.registry import LOSS_REGISTRY
 from tasks.registry import TASK_BUILDER_REGISTRY
-# AI-CHANGE: 可视化方法运行 Registry 接入(AI 编写, 待人工审查)。
-# 只引入方法级 Registry,不涉及任何任务 Builder,模型与数据集声明另行设计。
 from visualize.registry import VISUALIZER_REGISTRY
 from visualize.methods.loss_landscape import LossLandscapeVisualizer
 from parse.errors import UnknownFieldError, TypeMismatchError
@@ -877,8 +875,6 @@ TASK_LOOKUP_MAP = TASK_BUILDER_REGISTRY.lookup_map
 BIULD_MLM_PRETRAIN = TASK_CANONICAL_MAP["mlmpretrain_train"]
 BUILD_MLM_TEST = TASK_CANONICAL_MAP["mlmpretrain_test"]
 BUILD_MLM_INFERENCE = TASK_CANONICAL_MAP["mlmpretrain_inference"]
-# AI-CHANGE: MLM 可视化任务 Builder(AI 编写, 待人工审查)。
-# 只组装 tokenizer/model/dataloader/visualizers,不组装损失与指标。
 BUILD_MLM_VISUALIZE = TASK_CANONICAL_MAP["mlmpretrain_visualize"]
 BUILD_QA_SFT = TASK_CANONICAL_MAP["qasft_train"]
 BUILD_QA_TEST = TASK_CANONICAL_MAP["qasft_test"]
@@ -888,7 +884,6 @@ BUILD_QA_VISUALIZE = TASK_CANONICAL_MAP["qasft_visualize"]
 BIULD_MLM_PRETRAIN_aliases = []
 BUILD_MLM_TEST_aliases = []
 BUILD_MLM_INFERENCE_aliases = []
-# AI-CHANGE: MLM 可视化任务别名(AI 编写, 待人工审查)。
 BUILD_MLM_VISUALIZE_aliases = []
 BUILD_QA_SFT_aliases = []
 BUILD_QA_TEST_aliases = []
@@ -916,7 +911,6 @@ for alias, canonical_key in TASK_LOOKUP_MAP.items():
 BIULD_MLM_PRETRAIN_aliases = tuple(BIULD_MLM_PRETRAIN_aliases)
 BUILD_MLM_TEST_aliases = tuple(BUILD_MLM_TEST_aliases)
 BUILD_MLM_INFERENCE_aliases = tuple(BUILD_MLM_INFERENCE_aliases)
-# AI-CHANGE: MLM 可视化任务别名(AI 编写, 待人工审查)。
 BUILD_MLM_VISUALIZE_aliases = tuple(BUILD_MLM_VISUALIZE_aliases)
 BUILD_QA_SFT_aliases = tuple(BUILD_QA_SFT_aliases)
 BUILD_QA_TEST_aliases = tuple(BUILD_QA_TEST_aliases)
@@ -957,8 +951,6 @@ QA_SFT_TRAIN_BOOTSTRAP_DESCRIPTORS = (
 )
 
 QA_SFT_TEST_BOOTSTRAP_DESCRIPTORS = (
-    # PARSE_REFACTOR_DEMO: 与 MLM Test 一样，QA Test 的 Loss 可以由 Test
-    # 配置声明；未声明时由 checkpoint.train_config 提供。
     BootstrapDescriptor(("losses", "*"), "loss", required=False),
     BootstrapDescriptor(("evaluation", "metrics", "test", "*"), "metric"),
 )
@@ -1012,8 +1004,6 @@ BUILD_QA_INFERENCE_PARAMS_SCHEMA = MappingSchema(
     allow_none=False,
 )
 
-# AI-CHANGE: MLM 可视化任务 Params Schema(AI 编写, 待人工审查)。
-# 任务级 params 为空占位,方法级 params 由各 visualizer Spec 负责。
 BUILD_MLM_VISUALIZE_PARAMS_SCHEMA = MappingSchema(
     fields={},
     allow_unknown=True,

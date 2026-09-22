@@ -16,8 +16,6 @@ def main():
     args = parse_args()
     config_path = args.config
     resume = args.resume
-    # PARSE_REFACTOR_DEMO: 训练入口统一使用新版 Parse；Builder 暂时仍按
-    # 旧字段读取，后续由 Builder 迁移阶段解决配置字段适配。
     config_dict, parse_context, compiled_schema = parse_config(
         config_path=config_path,
         expected_mode=EXPECTED_MODE,

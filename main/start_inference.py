@@ -1,5 +1,3 @@
-# PARSE_REFACTOR_DEMO: readline 为标准 input() 提供终端行编辑能力，支持
-# Linux/WSL 中的方向键、历史记录和左右移动；导入失败时仍保留基础输入能力。
 try:
     import readline
 except ImportError:

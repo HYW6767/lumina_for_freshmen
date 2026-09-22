@@ -10,8 +10,6 @@ from metrics.registry import METRIC_REGISTRY
 from metrics.core.collection import MetricCollection
 from metrics.output.writer import MetricWriter
 from Trainer.trainer import Trainer
-# AI-CHANGE: 为 init_from backbone 加载补充的导入（原加载逻辑依赖
-# Trainer.checkpoint.load_checkpoint，迁移时该导入随加载动作一起丢失）。
 from Trainer.checkpoint import load_checkpoint, load_checkpoint_state
 
 from torch.utils.data import DataLoader
@@ -126,29 +124,6 @@ def build_qa_sft(config_dict, device_summary, resume=None, experiment_paths=None
         layer_norm_eps=layer_norm_eps,
     )
 
-    # ========================= AI 修改开始 =========================
-    # AI-CHANGE: 恢复旧版 backbone 加载逻辑（来源: git commit 46be1fa 的
-    # tasks/QA_SFT/builder.py 第 189-199 行，逐行照抄旧版实现）。
-    #
-    # 背景: 配置结构从 model.backbone_path 迁移为 model.init_from 时，
-    # Builder 里丢失了加载动作，只留下 model_init_from = ... 这行死代码，
-    # 导致 QA 模型始终从随机权重训练，这是 valid 指标为 0 的重要代码级原因。
-    #
-    # 加载方式与旧版完全一致：
-    #   1. 复用现成的 load_checkpoint() 读取并校验 .pt 文件；
-    #   2. 取出 checkpoint["task_state"]；
-    #   3. 只保留 "model.bert." 前缀的键（backbone 部分）；
-    #   4. 剥离前缀后加载进 model.bert 子模块；
-    #   5. strict=True 只作用于过滤后的 backbone 子集，MLM head 等
-    #      无关键不会冲突，同时保证 backbone 必须完整匹配，不静默漏加载。
-    #
-    # AI 新增的防御（旧版没有，仅提前报错并说明原因，行为不变）:
-    #   - kind 非 "backbone" 时报错；
-    #   - 过滤后 backbone_state 为空时报错（否则 strict=True 会以
-    #     missing keys 的形式报错，原因不直观）。
-    #
-    # 预期日志验证点: 启动训练不报错即说明加载成功；MLM 的 mlm_head.* 和
-    # QA 的 qa_outputs.* 权重保持随机初始化，属于预期行为。
     if model_init_from is not None:
         if model_init_from["kind"] != "backbone":
             raise ValueError(

@@ -125,6 +125,6 @@ evaluation:
 
 runtime:
   device:
-    type: cuda
+    type: cpu
     index: null
     count: 1

@@ -15,8 +15,6 @@ def build_mlm_test(config_dict, test_metrics_path, logger=None):
     from parse.parser import parse_config
     train_config, parse_context, compiled_schema = parse_config(
         config_path=train_config_path,
-        # PARSE_REFACTOR_DEMO: 这里解析的是 checkpoint 引用的训练配置，
-        # 因此必须按训练 task 的 mode 校验，而不是按当前 Test 入口校验。
         expected_mode='train',
         validate_runtime=False,
     )

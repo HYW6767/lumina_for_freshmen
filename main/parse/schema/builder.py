@@ -144,8 +144,6 @@ def build_schema(context, registries):
     )
     metric_schema = _polymorphic_schema("metric", registries["metric"])
     decoding_schema = _polymorphic_schema("decoding", registries["decoding"])
-    # AI-CHANGE: 可视化方法区 Schema 接入(AI 编写, 待人工审查)。
-    # visualize.methods 走 visualizer 多态外壳，具体 params 由各方法 Spec 细化。
     visualizer_schema = _polymorphic_schema("visualizer", registries["visualizer"])
     visualize_schema = MappingSchema(
         fields={

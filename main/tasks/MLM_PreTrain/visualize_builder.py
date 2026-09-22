@@ -5,19 +5,11 @@ from models.Transformer.losses.losses import WeightedLoss
 from tasks.MLM_PreTrain.mlm import MLMTask
 from loaders.mlm import MLMDataset, MLMCollator
 from visualize.registry import VISUALIZER_REGISTRY
-# AI-CHANGE: 可视化 Builder 内部装载权重(AI 编写, 待人工审查)。
-# 与 Tester/Inference 的 runner 职责划分不同：可视化 Builder 已经从
-# checkpoint.train_config 恢复了模型结构，权重路径来自同一份 run.checkpoint，
-# 因此在 Builder 内一次性完成"建结构 + 装权重"，入口不再重复读 checkpoint。
 from Trainer.checkpoint import load_checkpoint
 
 from torch.utils.data import DataLoader
 
-# AI-CHANGE: MLM 可视化 Builder(AI 编写, 待人工审查)。
-# 只组装可视化需要的四件套(tokenizer/model/task/dataloader/visualizers),
-# 不组装 losses/metrics/optimizer；模型结构从 checkpoint.train_config 恢复，
-# 权重在 Builder 内从 run.checkpoint.path 装载；数据集取 data.splits.visualize，
-# loader 读 loaders.visualize。
+
 def build_mlm_visualize(config_dict, logger=None):
     if not isinstance(config_dict, dict):
         raise ValueError(f"config_dict 必须为dict类型的喵! 现在的type: {type(config_dict)}")
@@ -138,10 +130,6 @@ def build_mlm_visualize(config_dict, logger=None):
         loss_fn=None,
     )
 
-    # AI-CHANGE: Builder 内装载 checkpoint 权重(AI 编写, 待人工审查)。
-    # .pt 存的是 task_state(键带 model. 前缀),正好对应 MLMTask 的结构；
-    # test/inference 在 runner 里装是因为入口不恢复结构，可视化 Builder 已恢复
-    # 结构，同一份 run.checkpoint 在此一次装完，入口不再重复读。
     checkpoint_path = config_dict["run"]["checkpoint"]["path"]
     checkpoint = load_checkpoint(checkpoint_path, map_location="cpu")
     task_state = checkpoint["task_state"]
@@ -173,9 +161,6 @@ def build_mlm_visualize(config_dict, logger=None):
             raise ValueError(f"method_config['type'] 必须为str类型的喵! 现在的type: {type(method_config['type'])}")
         if not method_config["type"].strip():
             raise ValueError(f"method_config['type'] 不能为空喵!")
-        # AI-CHANGE: 先 resolve_key 再 get(AI 编写, 待人工审查)。
-        # canonical_map 只有规范键(如 attentionheatmap),yaml 里写的是别名
-        # (如 attention_heatmap),直接查表会 KeyError,必须走别名归一化。
         canonical_key = VISUALIZER_REGISTRY.resolve_key(method_config["type"])
         visualizer_class = VISUALIZER_REGISTRY.get(canonical_key)
         method_params = method_config.get("params", {})
